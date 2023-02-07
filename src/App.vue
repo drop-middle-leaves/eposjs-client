@@ -1,22 +1,23 @@
 <script setup>
-import searchTotal from './components/searchTotal.vue'
+import CurrentTable from "@/components/currentTable.vue";
+import SearchTotal from "@/components/searchTotal.vue";
 </script>
 
 <template>
   <body>
   <div id="app">
     <div class="container-fluid vh-100">
-      <div class="row h-50">
+      <div class="row h-50 g-2">
         <div class="col-6">
-          <div class="box w-100">
-            <p>test</p>
-          </div>
+          <current-table/>
         </div>
         <div class="col-6" >
-          <searchTotal/>
+          <div class="h-100 w-100">
+            <search-total/>
+          </div>
         </div>
       </div>
-      <div class="row h-50">
+      <div class="row h-50 g-2">
         <div class=" col-6">
           <div class="box w-100">
             <p>test</p>
