@@ -16,7 +16,7 @@ import SearchTotal from "@/components/searchTotal.vue";
       </div>
       <div class="flex-row h-1/2 w-full">
         <div class="flex-col h-full w-full">
-          <div class="bg-purple-500 h-full w-full">hi</div>
+          <search-total />
         </div>
         <div class="flex-col h-full w-full">
           <div class="bg-green-500 h-full w-full"></div>
