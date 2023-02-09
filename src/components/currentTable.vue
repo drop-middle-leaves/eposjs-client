@@ -2,85 +2,29 @@
 </script>
 
 <template>
-  <div class="mt-2 mb-2 table-responsive table-wrapper w-100 rounded-3">
-    <table class="table align-middle">
-      <thead>
+  <div class="h-[calc(100%_-_0.5rem)] w-[calc(100%_-_0.5rem)] border overflow-y-scroll scrollbar scrollbar-thumb-rounded-lg scrollbar-thumb-gray-300 rounded-lg">
+    <table class="table-auto w-full">
+      <thead class="bg-gray-500">
         <tr>
-          <th>Item</th>
-          <th>Quantity</th>
-          <th>Price</th>
-          <th>Total</th>
+          <th class="px-4 py-2">Item</th>
+          <th class="px-4 py-2">Qty</th>
+          <th class="px-4 py-2">Price</th>
+          <th class="px-4 py-2">Total</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>IRN-BRU Bottle 500ml</td>
-          <td>10</td>
-          <td>€1.20</td>
-          <td>€12.00</td>
-        </tr>
-        <tr>
-          <td>IRN-BRU Bottle 500ml</td>
-          <td>10</td>
-          <td>€1.20</td>
-          <td>€12.00</td>
-        </tr>
-        <tr>
-          <td>IRN-BRU Bottle 500ml</td>
-          <td>10</td>
-          <td>€1.20</td>
-          <td>€12.00</td>
-        </tr>
-        <tr>
-          <td>IRN-BRU Bottle 500ml</td>
-          <td>10</td>
-          <td>€1.20</td>
-          <td>€12.00</td>
-        </tr>
-        <tr>
-          <td>IRN-BRU Bottle 500ml</td>
-          <td>10</td>
-          <td>€1.20</td>
-          <td>€12.00</td>
-        </tr>
-        <tr>
-          <td>IRN-BRU Bottle 500ml</td>
-          <td>10</td>
-          <td>€1.20</td>
-          <td>€12.00</td>
-        </tr>
-        <tr>
-          <td>IRN-BRU Bottle 500ml</td>
-          <td>10</td>
-          <td>€1.20</td>
-          <td>€12.00</td>
-        </tr>
-        <tr>
-          <td>IRN-BRU Bottle 500ml</td>
-          <td>10</td>
-          <td>€1.20</td>
-          <td>€12.00</td>
-        </tr>
-        <tr>
-          <td>IRN-BRU Bottle 500ml</td>
-          <td>10</td>
-          <td>€1.20</td>
-          <td>€12.00</td>
+        <tr v-for="i in 20">
+          <th class="border px-4 py-2">Item 1</th>
+          <td class="border px-4 py-2">{{ i }}</td>
+          <td class="border px-4 py-2">1.00</td>
+          <td class="border px-4 py-2">1.00</td>
         </tr>
       </tbody>
-      <tfoot>
-        <tr>
-          <td colspan="4">Total: €9.90</td>
-        </tr>
-      </tfoot>
     </table>
   </div>
+
 </template>
 
 <style scoped>
-.table-wrapper {
-  max-height: 82%;
-  overflow: auto;
-  display:inline-block;
-}
+
 </style>

@@ -4,40 +4,27 @@ import SearchTotal from "@/components/searchTotal.vue";
 </script>
 
 <template>
-  <body>
-  <div id="app">
-    <div class="container-fluid vh-100">
-      <div class="row h-50 g-2">
-        <div class="col-6">
-          <current-table/>
+  <div id="app" class="flex h-screen w-screen justify-center">
+    <div class="flex h-[calc(100vh_-_1rem)] w-[calc(100vw_-_1rem)] self-center">
+      <div class="flex-row h-1/2 w-full">
+        <div class="flex-col h-full w-full">
+          <current-table />
         </div>
-        <div class="col-6" >
-          <div class="h-100 w-100">
-            <search-total/>
-          </div>
+        <div class="flex-col h-full w-full">
+          <div class="bg-red-500 h-full w-full">hello</div>
         </div>
       </div>
-      <div class="row h-50 g-2">
-        <div class=" col-6">
-          <div class="box w-100">
-            <p>test</p>
-          </div>
+      <div class="flex-row h-1/2 w-full">
+        <div class="flex-col h-full w-full">
+          <div class="bg-purple-500 h-full w-full">hi</div>
         </div>
-        <div class="col-6">
-          <div class="box w-100">
-            <p>test</p>
-          </div>
+        <div class="flex-col h-full w-full">
+          <div class="bg-green-500 h-full w-full"></div>
         </div>
       </div>
     </div>
   </div>
-  </body>
 </template>
 
 <style scoped>
-.box {
-  background-color: red;
-  width: 100%;
-  height: 100%;
-}
 </style>
