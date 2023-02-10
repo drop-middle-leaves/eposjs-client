@@ -14,8 +14,8 @@
       </thead>
       <tbody>
         <tr v-for="i in 20">
-          <th class="border px-4 py-2">Item 1</th>
-          <td class="border px-4 py-2">{{ i }}</td>
+          <th class="border px-4 py-2">Irn Bru {{ i }}</th>
+          <td class="border px-4 py-2">1</td>
           <td class="border px-4 py-2">1.00</td>
           <td class="border px-4 py-2">1.00</td>
         </tr>
