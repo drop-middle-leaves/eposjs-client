@@ -1,8 +1,10 @@
 <script setup>
-import currentTable from "@/components/currentTable.vue";
-import search from "@/components/search.vue";
-import searchButton from "@/components/search-button.vue";
-import total from "@/components/total.vue";
+import CurrentTable from "@/components/currentTable.vue";
+import Search from "@/components/search.vue";
+import SearchButton from "@/components/searchButton.vue";
+import Total from "@/components/total.vue";
+import QuickActions from "@/components/quickActions.vue";
+import Keypad from "@/components/keypad.vue";
 </script>
 
 <template>
@@ -24,11 +26,11 @@ import total from "@/components/total.vue";
         <div class="flex-row flex h-1/2 w-full">
           <!-- creates the first column ^ -->
           <div class="flex-col h-full w-1/2 flex justify-center">
-            <total />
+            <search-button />
           </div>
           <!-- creates the second column ^ -->
           <div class="flex-col h-full w-1/2 flex justify-center">
-            <search-button />
+            <total />
           </div>
         </div>
       </div>
@@ -37,11 +39,11 @@ import total from "@/components/total.vue";
     <div class="flex-row flex h-1/2 w-full">
       <!-- creates the first column of the second row -->
       <div class="flex-col h-full w-full">
-        <div class="bg-green-500 h-full w-full"></div>
+        <quick-actions />
       </div>
       <!-- creates the second column of the second row -->
       <div class="flex-col h-full w-full">
-        <div class="bg-red-500 h-full w-full"></div>
+        <keypad />
       </div>
     </div>
   </div>
