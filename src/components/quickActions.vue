@@ -46,9 +46,9 @@
 
 <style lang="postcss" scoped>
 .buttonIcon {
-  @apply h-[3.5rem] w-[3.5rem];
+  @apply h-[5.5rem] w-[5.5rem] aspect-square self-center;
 }
 .buttonWrapper {
-  @apply h-full w-full rounded-lg text-white text-6xl;
+  @apply h-full w-full rounded-lg text-white text-6xl flex justify-center
 }
 </style>

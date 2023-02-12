@@ -1,23 +1,39 @@
 <script setup>
 
-import { ref } from 'vue';
+import { computed } from 'vue';
 
-// Sets current val to be blank
-const currentVal = ref("");
+// Defines props and emits
+const props = defineProps(['modelValue'])
+const emit = defineEmits(['update:modelValue'])
+
+// Defines value as the computed value of qty
+const qty = computed({
+  get() {
+    return props.modelValue
+  },
+  set(value) {
+    emit('update:modelValue', value)
+  }
+})
+
 
 // Updates current val by adding the number passed in
 function updateValBy(num) {
   // Max length of 3 to prevent GUI overflow (also not a good idea to accidentally buy 3000 Irn Brus)
-  if (currentVal.value.length === 3) {
-    currentVal.value = "" + num;
+  if (qty.value.length === 3) {
+    // If the current value is 3 digits, replace it with the number
+    qty.value = "" + num
+  } else if (qty.value === "0") {
+    // If the current value is 0, replace it with the number
+    qty.value = "" + num
   } else {
-    currentVal.value = "" + currentVal.value + num;
+    qty.value = qty.value + num
   }
 }
 
 // Clears current val
 function clearVal() {
-  currentVal.value = "";
+  qty.value = ""
 }
 
 </script>
@@ -29,8 +45,8 @@ function clearVal() {
       <div class="flex-col flex h-full aspect-[4/3] gap-2">
 
         <div class="flex-row flex h-1/3 w-full gap-2">
-          <div class="buttonWrapper border-4 border-purple-600 text-6xl">
-            <p class="self-center">{{currentVal}}</p>
+          <div class="buttonWrapper border-4 border-purple-600 text-[5.375rem]">
+            <p class="self-center">{{qty}}</p>
           </div>
           <div class="buttonWrapper" @click="updateValBy(1)">
             <button class="button">1</button>
@@ -60,7 +76,7 @@ function clearVal() {
 
         <div class="flex-row flex h-1/3 w-full gap-2">
           <div class="buttonWrapper ">
-            <button class="h-full w-full rounded-full bg-red-500 hover:bg-red-600 text-white text-5xl" @click="clearVal">Clear</button>
+            <button class="h-full w-full rounded-full bg-red-500 hover:bg-red-600 text-white text-[4rem]" @click="clearVal">Clear</button>
           </div>
           <div class="buttonWrapper">
             <button class="button" @click="updateValBy(7)">7</button>
@@ -80,7 +96,7 @@ function clearVal() {
 
 <style lang="postcss" scoped>
 .button {
-  @apply rounded-full bg-purple-500 hover:bg-purple-600 text-6xl h-full w-full text-white;
+  @apply rounded-full bg-purple-500 hover:bg-purple-600 text-[5.5rem] h-full w-full text-white;
 }
 
 .buttonWrapper {
