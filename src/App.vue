@@ -5,11 +5,31 @@ import SearchButton from "@/components/searchButton.vue";
 import Total from "@/components/total.vue";
 import QuickActions from "@/components/quickActions.vue";
 import Keypad from "@/components/keypad.vue";
+import SearchModal from "@/components/searchModal.vue";
+
+import { ref } from "vue";
+
+let showSearchModal = ref(true);
+
+function flipModal(x) {
+  switch(x) {
+    case true:
+      console.log("test")
+      showSearchModal.value = true;
+      break;
+    case false:
+      showSearchModal.value = false;
+      break;
+  }
+}
+
 </script>
 
 <template>
   <!-- mounts to main.js, makes the size the size of the screen -->
   <div id="app" class="h-screen w-screen">
+    <!-- creates the search modal -->
+    <search-modal @close="flipModal(false)" v-if="showSearchModal" />
     <!-- creates the 1st row -->
     <div class="flex-row flex h-1/2 w-full">
       <!-- creates the 1st column of the first row -->
@@ -26,7 +46,7 @@ import Keypad from "@/components/keypad.vue";
         <div class="flex-row flex h-1/2 w-full">
           <!-- creates the first column ^ -->
           <div class="flex-col h-full w-1/2 flex justify-center">
-            <search-button />
+            <search-button @goSearch="flipModal(true)" />
           </div>
           <!-- creates the second column ^ -->
           <div class="flex-col h-full w-1/2 flex justify-center">
