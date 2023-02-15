@@ -115,7 +115,7 @@ async function selectAfterSearch(ean) {
     changeModal(true, "error");
   } else {
     // If quantity is not set, set it to 1
-    const currentQty = (qty.value == "") ? 1 : parseInt(qty.value);
+    const currentQty = (qty.value === "") ? 1 : parseInt(qty.value);
 
     // Pushes the item to the till
     currentTill.value.push([searchResultsJSON[0].Description, currentQty, parseFloat(searchResultsJSON[0].Price)])
@@ -174,16 +174,7 @@ async function selectAfterSearch(ean) {
     <div class="flex-row flex h-1/2 w-full">
       <!-- creates the 1st column of the first row -->
       <div class="flex-col h-full w-full">
-        <current-table>
-          <template v-slot:tableContent>
-                <tr v-for="i in currentTill">
-                  <th class="border-t-2 border-gray-200 px-4 py-2">{{ i[0] }}</th>
-                  <td class="border-t-2 border-l-2 border-gray-200 px-4 py-2">{{ i[1] }}</td>
-                  <td class="border-t-2 border-l-2 border-gray-200 px-4 py-2">€{{ i[2].toFixed(2) }}</td>
-                  <td class="border-t-2 border-l-2 border-gray-200 px-4 py-2">€{{ (i[2] * i[1]).toFixed(2) }}</td>
-                </tr>
-          </template>
-        </current-table>
+        <current-table :current-till="currentTill" />
       </div>
       <!-- creates the 2nd column of the first row -->
       <div class="flex-col flex h-full w-full">

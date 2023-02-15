@@ -1,4 +1,6 @@
 <script setup>
+const props = defineProps(['currentTill'])
+
 </script>
 
 <template>
@@ -15,7 +17,12 @@
           </tr>
           </thead>
           <tbody>
-            <slot name="tableContent"><h1>Empty</h1></slot>
+            <tr v-for="i in props.currentTill">
+              <th class="border-t-2 border-gray-200 px-4 py-2">{{ i[0] }}</th>
+              <td class="border-t-2 border-l-2 border-gray-200 px-4 py-2">{{ i[1] }}</td>
+              <td class="border-t-2 border-l-2 border-gray-200 px-4 py-2">€{{ i[2].toFixed(2) }}</td>
+              <td class="border-t-2 border-l-2 border-gray-200 px-4 py-2">€{{ (i[2] * i[1]).toFixed(2) }}</td>
+            </tr>
           </tbody>
         </table>
       </slot>

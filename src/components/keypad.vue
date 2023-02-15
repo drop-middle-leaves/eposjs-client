@@ -39,12 +39,12 @@ function clearVal() {
 </script>
 
 <template>
-  <div class="h-full w-full flex justify-center">
+  <div class="max-h-full max-w-full overflow-auto min-h-0 min-w-0 h-full w-full">
     <!-- Creates outer border -->
     <div class="h-[calc(100%_-_1rem)] w-[calc(100%_-_1rem)] self-center flex justify-center">
-      <div class="flex-col flex h-full aspect-[4/3] gap-2">
+      <div class="flex-col flex h-full aspect-[4/3] gap-2 shrink">
 
-        <div class="flex-row flex h-1/3 w-full gap-2">
+        <div class="flex-row flex h-1/3 w-full gap-2 shrink">
           <div class="buttonWrapper border-4 border-purple-600 text-[5.375rem]">
             <p class="self-center">{{qty}}</p>
           </div>
@@ -59,7 +59,7 @@ function clearVal() {
           </div>
         </div>
 
-        <div class="flex-row flex h-1/3 w-full gap-2">
+        <div class="flex-row flex h-1/3 w-full gap-2 shrink">
           <div class="buttonWrapper ">
             <button class="button" @click="updateValBy(0)">0</button>
           </div>
@@ -74,7 +74,7 @@ function clearVal() {
           </div>
         </div>
 
-        <div class="flex-row flex h-1/3 w-full gap-2">
+        <div class="flex-row flex h-1/3 w-full gap-2 shrink">
           <div class="buttonWrapper ">
             <button class="h-full w-full rounded-full bg-red-500 hover:bg-red-600 text-white text-[4rem]" @click="clearVal">Clear</button>
           </div>
@@ -96,10 +96,10 @@ function clearVal() {
 
 <style lang="postcss" scoped>
 .button {
-  @apply rounded-full bg-purple-500 hover:bg-purple-600 text-[5.5rem] h-full w-full text-white;
+  @apply rounded-full bg-purple-500 hover:bg-purple-600 text-[5.5rem] h-full w-full text-white shrink;
 }
 
 .buttonWrapper {
-  @apply flex-col h-full aspect-square flex justify-center rounded-full;
+  @apply flex-col h-full aspect-square flex justify-center rounded-full place-items-center;
 }
 </style>
