@@ -35,41 +35,6 @@ const showSearchModal = ref(false)
 // Ref to determine if the error modal is shown
 const showErrorModal = ref(false)
 
-// Changes the value of modal
-function changeModal(open, type) {
-  switch (type) {
-    // If the type is search, change the value of showSearchModal
-    case 'search': {
-      switch (open) {
-        case true:
-          showSearchModal.value = true
-          break
-        case false:
-          showSearchModal.value = false
-          search.value = ''
-          break
-      }
-      break
-    }
-    // If the type is error, change the value of showErrorModal
-    case 'error': {
-      switch (open) {
-        case true:
-          showErrorModal.value = true
-          break
-        case false:
-          showErrorModal.value = false
-          search.value = ''
-          break
-      }
-      break
-    }
-    default: {
-      break
-    }
-  }
-}
-
 // Runs the search
 async function runSearch() {
   // If no search value, don't bother returning all the data (useless + waste of resource)
@@ -92,11 +57,11 @@ async function runSearch() {
   searchBody.value = await searchResults.json()
 
   // Shows the search modal
-  changeModal(true, 'search')
+  showSearchModal.value = true
 }
 
 // Select item after search results
-async function selectAfterSearch(ean) {
+async function addItem(ean) {
   console.log(ean)
 
   // Fetches the EAN info from the till (price etc)
@@ -111,7 +76,7 @@ async function selectAfterSearch(ean) {
   })
 
   // Closes search modal
-  changeModal(false, 'search')
+  showSearchModal.value = false
 
   const searchResultsJSON = await searchResults.json()
 
@@ -119,23 +84,36 @@ async function selectAfterSearch(ean) {
   if (searchResultsJSON[0].Price == null) {
     errorMessage.value =
       'The Item you have selected does not have an entry within the Price table. Please contact Retail Systems.'
-    changeModal(true, 'error')
+    showErrorModal.value = true
   } else {
     // If quantity is not set, set it to 1
     const currentQty = qty.value === '' ? 1 : parseInt(qty.value)
 
-    console.log(currentTill.value.length)
+    // If item already in the till (same EAN), add the quantity to the existing item
+    if (
+      // Tests whether at least one element in the item passes the test implemented by the provided function
+      currentTill.value.some(
+        // Tests whether the item description is the same as the description of the item being added
+        (item) => item[1] === searchResultsJSON[0].Description
+      )
+    ) {
+      // Gets the index of the item in the till
+      const index = currentTill.value.findIndex(
+        (item) => item[1] === searchResultsJSON[0].Description
+      )
 
-    // Pushes the item to the till
-    currentTill.value.push([
-      // ID for Vue Key
-      currentTill.value.length,
-      searchResultsJSON[0].Description,
-      currentQty,
-      parseFloat(searchResultsJSON[0].Price),
-    ])
-
-    console.log(currentTill.value)
+      // Adds the quantity to the existing item
+      currentTill.value[index][2] += currentQty
+    } else {
+      // If the item is not in the till, push it to the till
+      currentTill.value.push([
+        // ID for Vue Key
+        currentTill.value.length,
+        searchResultsJSON[0].Description,
+        currentQty,
+        parseFloat(searchResultsJSON[0].Price),
+      ])
+    }
   }
 
   // Resets the quantity
@@ -147,7 +125,7 @@ async function selectAfterSearch(ean) {
   <!-- mounts to main.js, makes the size the size of the screen -->
   <div id="app" class="w-screen h-screen">
     <!-- Error modal -->
-    <modal v-if="showErrorModal" @close="changeModal(false, 'error')">
+    <modal v-if="showErrorModal" @close="showErrorModal = !showErrorModal">
       <template #header>
         <h1 class="mt-0 mb-6 text-5xl font-bold">Error</h1>
       </template>
@@ -159,27 +137,27 @@ async function selectAfterSearch(ean) {
     </modal>
 
     <!-- creates the search modal, defaults to -->
-    <modal v-if="showSearchModal" @close="changeModal(false, 'search')">
+    <modal v-if="showSearchModal" @close="showSearchModal = !showSearchModal">
       <!-- Replaces the header of the search modal -->
       <template #header>
-        <h1 class="mx-6 my-6 text-5xl font-bold">Search Results</h1>
+        <h1 class="mx-6 my-6 text-[3vw] font-bold">Search Results</h1>
       </template>
       <!-- Replaces the body of the search modal -->
       <template #body>
         <table class="w-[calc(100%_-_2rem)] my-6 mx-6">
           <thead>
             <tr>
-              <th class="px-5 py-3 text-4xl">Description</th>
-              <th class="px-5 py-3 text-4xl">EAN</th>
-              <th class="px-5 py-3 text-4xl">Select</th>
+              <th class="px-5 py-3 text-[1.75vw]">Description</th>
+              <th class="px-5 py-3 text-[1.75vw]">EAN</th>
+              <th class="px-5 py-3 text-[1.75vw]">Select</th>
             </tr>
           </thead>
           <tr v-for="i in searchBody">
-            <td class="px-5 py-3 text-4xl border-t-2 border-gray-200">
+            <td class="px-5 py-3 text-[1.75vw] border-t-2 border-gray-200">
               {{ i.Description }}
             </td>
             <td
-              class="px-5 py-3 text-4xl border-t-2 border-l-2 border-gray-200"
+              class="px-5 py-3 text-[1.75vw] border-t-2 border-l-2 border-gray-200"
             >
               {{ i.EAN }}
             </td>
@@ -188,12 +166,12 @@ async function selectAfterSearch(ean) {
             >
               <div class="flex justify-center">
                 <button
-                  class="flex self-center justify-center px-5 py-4 mt-3 font-bold text-white bg-green-500 rounded hover:bg-green-600"
-                  @click="selectAfterSearch(i.EAN)"
+                  class="flex w-[3.5vw] h-[5vh] self-center justify-center px-5 py-4 mt-3 font-bold text-white bg-green-500 rounded hover:bg-green-600"
+                  @click="addItem(i.EAN)"
                 >
                   <font-awesome-icon
                     icon="fa-solid fa-check"
-                    class="h-[3rem] w-[3rem] self-center"
+                    class="w-[3vw] h-[3vh] self-center"
                   />
                 </button>
               </div>

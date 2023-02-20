@@ -31,6 +31,19 @@ function voidItem() {
     currentSelected.value = ''
   }
 }
+
+// Function to fix an item
+function fixNow() {
+  if (currentSelected.value !== '') {
+    // If an item is selected, void it
+    currentTill.value[currentSelected.value][3] = 0
+  } else {
+    // If no item is selected, void all items
+    for (let i = 0; i < currentTill.value.length; i++) {
+      currentTill.value[i][3] = 0
+    }
+  }
+}
 </script>
 
 <template>
@@ -42,21 +55,29 @@ function voidItem() {
       <!-- Creates grid -->
       <div class="grid w-full h-full grid-flow-col grid-rows-3 gap-2">
         <!-- col 1 -->
+
+        <!-- Fix it now-->
         <button
           type="button"
           class="bg-orange-500 hover:bg-orange-600 buttonWrapper"
+          @click="fixNow"
         >
           <font-awesome-icon icon="fa-solid fa-hammer" class="buttonIcon" />
         </button>
+
+        <!-- Add bag -->
         <button
           type="button"
           class="bg-cyan-500 hover:bg-cyan-600 buttonWrapper"
+          @click="$emit('addItem', 898)"
         >
           <font-awesome-icon
             icon="fa-solid fa-shopping-bag"
             class="buttonIcon"
           />
         </button>
+
+        <!-- Refund -->
         <button
           type="button"
           class="bg-orange-500 hover:bg-orange-600 buttonWrapper"
@@ -68,6 +89,7 @@ function voidItem() {
         </button>
 
         <!-- col 2 -->
+        <!-- Void -->
         <button
           type="button"
           class="bg-red-500 hover:bg-red-600 buttonWrapper"
@@ -75,12 +97,16 @@ function voidItem() {
         >
           <font-awesome-icon icon="fa-solid fa-xmark" class="buttonIcon" />
         </button>
+
+        <!-- Quick Menu -->
         <button
           type="button"
           class="bg-cyan-500 hover:bg-cyan-600 buttonWrapper"
         >
           <font-awesome-icon icon="fa-solid fa-bars" class="buttonIcon" />
         </button>
+
+        <!-- Clear till -->
         <button
           type="button"
           class="bg-red-500 hover:bg-red-600 buttonWrapper"
@@ -93,18 +119,23 @@ function voidItem() {
         </button>
 
         <!-- col 3 -->
+        <!-- Price Override -->
         <button
           type="button"
           class="bg-orange-500 hover:bg-orange-600 buttonWrapper"
         >
           <font-awesome-icon icon="fa-solid fa-money-bill" class="buttonIcon" />
         </button>
+
+        <!-- Stock Check -->
         <button
           type="button"
           class="bg-yellow-500 hover:bg-yellow-600 buttonWrapper"
         >
           <font-awesome-icon icon="fa-solid fa-dolly" class="buttonIcon" />
         </button>
+
+        <!-- Discount -->
         <button
           type="button"
           class="bg-orange-500 hover:bg-orange-600 buttonWrapper"
