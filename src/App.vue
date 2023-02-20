@@ -193,13 +193,13 @@ async function selectAfterSearch(ean) {
     </modal>
 
     <!-- creates the 1st row -->
-    <div class="flex flex-row w-full h-1/2">
+    <div class="w-full md:flex md:flex-row h-1/2">
       <!-- creates the 1st column of the first row -->
-      <div class="flex-col w-full h-full">
+      <div class="w-full h-full md:flex-col">
         <current-table :current-till="currentTill" />
       </div>
       <!-- creates the 2nd column of the first row -->
-      <div class="flex flex-col w-full h-full">
+      <div class="flex w-full h-full md:flex-col">
         <!-- creates the area for the search box (first row, second column -> first row) -->
         <div class="flex flex-row justify-center w-full h-1/2">
           <search-box v-model="search" />
@@ -218,13 +218,13 @@ async function selectAfterSearch(ean) {
       </div>
     </div>
     <!-- creates the second row -->
-    <div class="flex flex-row w-full h-1/2">
+    <div class="w-full md:flex md:flex-row h-1/2">
       <!-- creates the first column of the second row -->
-      <div class="flex-col w-full h-full">
+      <div class="w-full h-full md:flex-col">
         <quick-actions />
       </div>
       <!-- creates the second column of the second row -->
-      <div class="flex-col w-full h-full">
+      <div class="w-full h-full md:flex-col">
         <keypad v-model="qty" />
       </div>
     </div>
