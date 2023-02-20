@@ -1,31 +1,30 @@
 <script setup>
 // Import the components
-import CurrentTable from "@/components/currentTable.vue";
-import Search from "@/components/search.vue";
-import SearchButton from "@/components/searchButton.vue";
-import Total from "@/components/total.vue";
-import QuickActions from "@/components/quickActions.vue";
-import Keypad from "@/components/keypad.vue";
-import Modal from "@/components/modal.vue";
+import CurrentTable from '@/components/currentTable.vue';
+import Search from '@/components/search.vue';
+import SearchButton from '@/components/searchButton.vue';
+import Total from '@/components/total.vue';
+import QuickActions from '@/components/quickActions.vue';
+import Keypad from '@/components/keypad.vue';
+import Modal from '@/components/modal.vue';
 
 // Import required vue modules
-import { ref } from "vue";
+import { ref } from 'vue';
 
 // Search results - defined at top to prevent UI errors
-const searchBody = ref("");
+const searchBody = ref('');
 
 // Prop for qty numpad
-const qty = ref("");
+const qty = ref('');
 
 // Prop for search input
-const search = ref("");
+const search = ref('');
 
 // Current till
 const currentTill = ref([]);
 
 // Error message
-const errorMessage = ref("");
-
+const errorMessage = ref('');
 
 // Ref to determine if the search modal is shown
 const showSearchModal = ref(false);
@@ -35,27 +34,27 @@ const showErrorModal = ref(false);
 
 // Changes the value of modal
 function changeModal(open, type) {
-  switch(type) {
-    case "search": {
-      switch(open) {
+  switch (type) {
+    case 'search': {
+      switch (open) {
         case true:
           showSearchModal.value = true;
           break;
         case false:
           showSearchModal.value = false;
-          search.value = "";
+          search.value = '';
           break;
       }
       break;
     }
     case 'error': {
-      switch(open) {
+      switch (open) {
         case true:
           showErrorModal.value = true;
           break;
         case false:
           showErrorModal.value = false;
-          search.value = "";
+          search.value = '';
           break;
       }
       break;
@@ -65,72 +64,74 @@ function changeModal(open, type) {
 
 // Runs the search
 async function runSearch() {
-
   // If no search value, don't bother returning all the data (useless + waste of resource)
-  if (search.value === "") {
+  if (search.value === '') {
     return;
   }
 
   // Fetches the search results from the API
-  const searchResults = await fetch("http://localhost:5200/search", {
-    method: "POST",
+  const searchResults = await fetch('http://localhost:5200/search', {
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json"
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      search: search.value
-    })
+      search: search.value,
+    }),
   });
 
   // Converts the search results to JSON, sets the searchBody prop to the results
   searchBody.value = await searchResults.json();
 
   // Shows the search modal
-  changeModal(true, "search");
+  changeModal(true, 'search');
 }
 
 // Select after search
 async function selectAfterSearch(ean) {
-  console.log(ean)
+  console.log(ean);
 
   // Fetches the EAN info from the till
-  const searchResults = await fetch("http://localhost:5200/getEanInfo", {
-    method: "POST",
+  const searchResults = await fetch('http://localhost:5200/getEanInfo', {
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json"
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      EAN: ean
-    })
+      EAN: ean,
+    }),
   });
 
   // Closes search modal
-  changeModal(false, "search");
+  changeModal(false, 'search');
 
   const searchResultsJSON = await searchResults.json();
 
   // If the priceHistory record does not exist, cannot be added to the till (none of the returned information is correct)
   if (searchResultsJSON[0].Price == null) {
-    errorMessage.value = "The Item you have selected does not have an entry within the Price table. Please contact Retail Systems."
-    changeModal(true, "error");
+    errorMessage.value =
+      'The Item you have selected does not have an entry within the Price table. Please contact Retail Systems.';
+    changeModal(true, 'error');
   } else {
     // If quantity is not set, set it to 1
-    const currentQty = (qty.value === "") ? 1 : parseInt(qty.value);
+    const currentQty = qty.value === '' ? 1 : parseInt(qty.value);
 
     // Pushes the item to the till
-    currentTill.value.push([searchResultsJSON[0].Description, currentQty, parseFloat(searchResultsJSON[0].Price)])
+    currentTill.value.push([
+      searchResultsJSON[0].Description,
+      currentQty,
+      parseFloat(searchResultsJSON[0].Price),
+    ]);
   }
 
   // Resets the quantity
-  qty.value = "";
+  qty.value = '';
 }
-
 </script>
 
 <template>
   <!-- mounts to main.js, makes the size the size of the screen -->
   <div id="app" class="w-screen h-screen">
-
     <!-- Error modal -->
     <modal @close="changeModal(false, 'error')" v-if="showErrorModal">
       <template v-slot:header>
@@ -157,12 +158,28 @@ async function selectAfterSearch(ean) {
               <th class="px-5 py-3 text-4xl">Select</th>
             </tr>
           </thead>
-        <tr v-for="i in searchBody">
-            <td class="px-5 py-3 text-4xl border-t-2 border-gray-200">{{ i.Description }}</td>
-            <td class="px-5 py-3 text-4xl border-t-2 border-l-2 border-gray-200">{{ i.EAN }}</td>
-            <td class="justify-center px-5 py-3 border-t-2 border-l-2 border-gray-200">
+          <tr v-for="i in searchBody">
+            <td class="px-5 py-3 text-4xl border-t-2 border-gray-200">
+              {{ i.Description }}
+            </td>
+            <td
+              class="px-5 py-3 text-4xl border-t-2 border-l-2 border-gray-200"
+            >
+              {{ i.EAN }}
+            </td>
+            <td
+              class="justify-center px-5 py-3 border-t-2 border-l-2 border-gray-200"
+            >
               <div class="flex justify-center">
-                <button class="flex self-center justify-center px-5 py-4 mt-3 font-bold text-white bg-green-500 rounded hover:bg-green-600" @click="selectAfterSearch(i.EAN)"><font-awesome-icon icon="fa-solid fa-check" class="h-[3rem] w-[3rem] self-center" /></button>
+                <button
+                  class="flex self-center justify-center px-5 py-4 mt-3 font-bold text-white bg-green-500 rounded hover:bg-green-600"
+                  @click="selectAfterSearch(i.EAN)"
+                >
+                  <font-awesome-icon
+                    icon="fa-solid fa-check"
+                    class="h-[3rem] w-[3rem] self-center"
+                  />
+                </button>
               </div>
             </td>
           </tr>
@@ -180,7 +197,7 @@ async function selectAfterSearch(ean) {
       <div class="flex flex-col w-full h-full">
         <!-- creates the area for the search box (first row, second column -> first row) -->
         <div class="flex flex-row justify-center w-full h-1/2">
-          <search v-model="search"/>
+          <search v-model="search" />
         </div>
         <!-- creates a second row (first row, second column -> second row) -->
         <div class="flex flex-row w-full h-1/2">
@@ -209,5 +226,4 @@ async function selectAfterSearch(ean) {
   </div>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>
