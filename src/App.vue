@@ -129,12 +129,12 @@ async function selectAfterSearch(ean) {
 
 <template>
   <!-- mounts to main.js, makes the size the size of the screen -->
-  <div id="app" class="h-screen w-screen">
+  <div id="app" class="w-screen h-screen">
 
     <!-- Error modal -->
     <modal @close="changeModal(false, 'error')" v-if="showErrorModal">
       <template v-slot:header>
-        <h1 class="text-5xl font-bold mt-0 mb-6">Error</h1>
+        <h1 class="mt-0 mb-6 text-5xl font-bold">Error</h1>
       </template>
       <template v-slot:body>
         <p class="text-2xl">{{ errorMessage }}</p>
@@ -145,7 +145,7 @@ async function selectAfterSearch(ean) {
     <modal @close="changeModal(false, 'search')" v-if="showSearchModal">
       <!-- Replaces the header of the search modal -->
       <template v-slot:header>
-        <h1 class="text-5xl font-bold my-6 mx-6">Search Results</h1>
+        <h1 class="mx-6 my-6 text-5xl font-bold">Search Results</h1>
       </template>
       <!-- Replaces the body of the search modal -->
       <template v-slot:body>
@@ -158,11 +158,11 @@ async function selectAfterSearch(ean) {
             </tr>
           </thead>
         <tr v-for="i in searchBody">
-            <td class="border-t-2 border-gray-200 px-5 py-3 text-4xl">{{ i.Description }}</td>
-            <td class="border-t-2 border-l-2 border-gray-200 px-5 py-3 text-4xl">{{ i.EAN }}</td>
-            <td class="border-t-2 border-l-2 border-gray-200 px-5 py-3 justify-center">
+            <td class="px-5 py-3 text-4xl border-t-2 border-gray-200">{{ i.Description }}</td>
+            <td class="px-5 py-3 text-4xl border-t-2 border-l-2 border-gray-200">{{ i.EAN }}</td>
+            <td class="justify-center px-5 py-3 border-t-2 border-l-2 border-gray-200">
               <div class="flex justify-center">
-                <button class="bg-green-500 mt-3 hover:bg-green-600 text-white font-bold px-5 py-4 rounded self-center flex justify-center" @click="selectAfterSearch(i.EAN)"><font-awesome-icon icon="fa-solid fa-check" class="h-[3rem] w-[3rem] self-center" /></button>
+                <button class="flex self-center justify-center px-5 py-4 mt-3 font-bold text-white bg-green-500 rounded hover:bg-green-600" @click="selectAfterSearch(i.EAN)"><font-awesome-icon icon="fa-solid fa-check" class="h-[3rem] w-[3rem] self-center" /></button>
               </div>
             </td>
           </tr>
@@ -171,38 +171,38 @@ async function selectAfterSearch(ean) {
     </modal>
 
     <!-- creates the 1st row -->
-    <div class="flex-row flex h-1/2 w-full">
+    <div class="flex flex-row w-full h-1/2">
       <!-- creates the 1st column of the first row -->
-      <div class="flex-col h-full w-full">
+      <div class="flex-col w-full h-full">
         <current-table :current-till="currentTill" />
       </div>
       <!-- creates the 2nd column of the first row -->
-      <div class="flex-col flex h-full w-full">
+      <div class="flex flex-col w-full h-full">
         <!-- creates the area for the search box (first row, second column -> first row) -->
-        <div class="flex-row h-1/2 w-full flex justify-center">
+        <div class="flex flex-row justify-center w-full h-1/2">
           <search v-model="search"/>
         </div>
         <!-- creates a second row (first row, second column -> second row) -->
-        <div class="flex-row flex h-1/2 w-full">
+        <div class="flex flex-row w-full h-1/2">
           <!-- creates the first column ^ -->
-          <div class="flex-col h-full w-1/2 flex justify-center">
+          <div class="flex flex-col justify-center w-1/2 h-full">
             <search-button @goSearch="runSearch" />
           </div>
           <!-- creates the second column ^ -->
-          <div class="flex-col h-full w-1/2 flex justify-center">
+          <div class="flex flex-col justify-center w-1/2 h-full">
             <total />
           </div>
         </div>
       </div>
     </div>
     <!-- creates the second row -->
-    <div class="flex-row flex h-1/2 w-full">
+    <div class="flex flex-row w-full h-1/2">
       <!-- creates the first column of the second row -->
-      <div class="flex-col h-full w-full">
+      <div class="flex-col w-full h-full">
         <quick-actions />
       </div>
       <!-- creates the second column of the second row -->
-      <div class="flex-col h-full w-full">
+      <div class="flex-col w-full h-full">
         <keypad v-model="qty" />
       </div>
     </div>
