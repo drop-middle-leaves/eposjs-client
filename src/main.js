@@ -1,12 +1,12 @@
 // Importing vue functions
-import { createApp } from 'vue';
-import App from './App.vue';
+import { createApp } from 'vue'
+import App from './App.vue'
 
 // Importing tailwind
-import './assets/compiled.css';
+import './assets/compiled.css'
 
 // Import fontawesome
-import { library } from '@fortawesome/fontawesome-svg-core';
+import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faArrowRotateLeft,
   faBars,
@@ -19,8 +19,8 @@ import {
   faShoppingBag,
   faXmark,
   faXmarksLines,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 // Adding fontawesome icons to library
 library.add(
@@ -35,7 +35,7 @@ library.add(
   faMoneyBill,
   faHammer,
   faArrowRotateLeft
-);
+)
 
 // Creating the app and mounting the div id app from App.vue
-createApp(App).component('font-awesome-icon', FontAwesomeIcon).mount('#app');
+createApp(App).component('font-awesome-icon', FontAwesomeIcon).mount('#app')

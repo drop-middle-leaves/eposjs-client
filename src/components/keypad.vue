@@ -1,37 +1,37 @@
 <script setup>
-import { computed } from 'vue';
+import { computed } from 'vue'
 
 // Defines props and emits
-const props = defineProps(['modelValue']);
-const emit = defineEmits(['update:modelValue']);
+const props = defineProps(['modelValue'])
+const emit = defineEmits(['update:modelValue'])
 
 // Defines value as the computed value of qty
 const qty = computed({
   get() {
-    return props.modelValue;
+    return props.modelValue
   },
   set(value) {
-    emit('update:modelValue', value);
+    emit('update:modelValue', value)
   },
-});
+})
 
 // Updates current val by adding the number passed in
 function updateValBy(num) {
   // Max length of 3 to prevent GUI overflow (also not a good idea to accidentally buy 3000 Irn Brus)
   if (qty.value.length === 3) {
     // If the current value is 3 digits, replace it with the number
-    qty.value = '' + num;
+    qty.value = '' + num
   } else if (qty.value === '0') {
     // If the current value is 0, replace it with the number
-    qty.value = '' + num;
+    qty.value = '' + num
   } else {
-    qty.value = qty.value + num;
+    qty.value = qty.value + num
   }
 }
 
 // Clears current val
 function clearVal() {
-  qty.value = '';
+  qty.value = ''
 }
 </script>
 

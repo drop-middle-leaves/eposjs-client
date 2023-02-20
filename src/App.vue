@@ -1,36 +1,36 @@
 <script setup>
 // Import the components
-import CurrentTable from '@/components/currentTable.vue';
-import Search from '@/components/search.vue';
-import SearchButton from '@/components/searchButton.vue';
-import Total from '@/components/total.vue';
-import QuickActions from '@/components/quickActions.vue';
-import Keypad from '@/components/keypad.vue';
-import Modal from '@/components/modal.vue';
+import { ref } from 'vue'
+import CurrentTable from './components/currentTable.vue'
+import SearchBox from './components/search.vue'
+import SearchButton from './components/searchButton.vue'
+import Total from './components/total.vue'
+import QuickActions from './components/quickActions.vue'
+import Keypad from './components/keypad.vue'
+import Modal from './components/modal.vue'
 
 // Import required vue modules
-import { ref } from 'vue';
 
 // Search results - defined at top to prevent UI errors
-const searchBody = ref('');
+const searchBody = ref('')
 
 // Prop for qty numpad
-const qty = ref('');
+const qty = ref('')
 
 // Prop for search input
-const search = ref('');
+const search = ref('')
 
 // Current till
-const currentTill = ref([]);
+const currentTill = ref([])
 
 // Error message
-const errorMessage = ref('');
+const errorMessage = ref('')
 
 // Ref to determine if the search modal is shown
-const showSearchModal = ref(false);
+const showSearchModal = ref(false)
 
 // Ref to determine if the error modal is shown
-const showErrorModal = ref(false);
+const showErrorModal = ref(false)
 
 // Changes the value of modal
 function changeModal(open, type) {
@@ -38,26 +38,29 @@ function changeModal(open, type) {
     case 'search': {
       switch (open) {
         case true:
-          showSearchModal.value = true;
-          break;
+          showSearchModal.value = true
+          break
         case false:
-          showSearchModal.value = false;
-          search.value = '';
-          break;
+          showSearchModal.value = false
+          search.value = ''
+          break
       }
-      break;
+      break
     }
     case 'error': {
       switch (open) {
         case true:
-          showErrorModal.value = true;
-          break;
+          showErrorModal.value = true
+          break
         case false:
-          showErrorModal.value = false;
-          search.value = '';
-          break;
+          showErrorModal.value = false
+          search.value = ''
+          break
       }
-      break;
+      break
+    }
+    default: {
+      break
     }
   }
 }
@@ -66,7 +69,7 @@ function changeModal(open, type) {
 async function runSearch() {
   // If no search value, don't bother returning all the data (useless + waste of resource)
   if (search.value === '') {
-    return;
+    return
   }
 
   // Fetches the search results from the API
@@ -78,18 +81,18 @@ async function runSearch() {
     body: JSON.stringify({
       search: search.value,
     }),
-  });
+  })
 
   // Converts the search results to JSON, sets the searchBody prop to the results
-  searchBody.value = await searchResults.json();
+  searchBody.value = await searchResults.json()
 
   // Shows the search modal
-  changeModal(true, 'search');
+  changeModal(true, 'search')
 }
 
 // Select after search
 async function selectAfterSearch(ean) {
-  console.log(ean);
+  console.log(ean)
 
   // Fetches the EAN info from the till
   const searchResults = await fetch('http://localhost:5200/getEanInfo', {
@@ -100,32 +103,32 @@ async function selectAfterSearch(ean) {
     body: JSON.stringify({
       EAN: ean,
     }),
-  });
+  })
 
   // Closes search modal
-  changeModal(false, 'search');
+  changeModal(false, 'search')
 
-  const searchResultsJSON = await searchResults.json();
+  const searchResultsJSON = await searchResults.json()
 
   // If the priceHistory record does not exist, cannot be added to the till (none of the returned information is correct)
   if (searchResultsJSON[0].Price == null) {
     errorMessage.value =
-      'The Item you have selected does not have an entry within the Price table. Please contact Retail Systems.';
-    changeModal(true, 'error');
+      'The Item you have selected does not have an entry within the Price table. Please contact Retail Systems.'
+    changeModal(true, 'error')
   } else {
     // If quantity is not set, set it to 1
-    const currentQty = qty.value === '' ? 1 : parseInt(qty.value);
+    const currentQty = qty.value === '' ? 1 : parseInt(qty.value)
 
     // Pushes the item to the till
     currentTill.value.push([
       searchResultsJSON[0].Description,
       currentQty,
       parseFloat(searchResultsJSON[0].Price),
-    ]);
+    ])
   }
 
   // Resets the quantity
-  qty.value = '';
+  qty.value = ''
 }
 </script>
 
@@ -133,23 +136,25 @@ async function selectAfterSearch(ean) {
   <!-- mounts to main.js, makes the size the size of the screen -->
   <div id="app" class="w-screen h-screen">
     <!-- Error modal -->
-    <modal @close="changeModal(false, 'error')" v-if="showErrorModal">
-      <template v-slot:header>
+    <modal v-if="showErrorModal" @close="changeModal(false, 'error')">
+      <template #header>
         <h1 class="mt-0 mb-6 text-5xl font-bold">Error</h1>
       </template>
-      <template v-slot:body>
-        <p class="text-2xl">{{ errorMessage }}</p>
+      <template #body>
+        <p class="text-2xl">
+          {{ errorMessage }}
+        </p>
       </template>
     </modal>
 
     <!-- creates the search modal, defaults to -->
-    <modal @close="changeModal(false, 'search')" v-if="showSearchModal">
+    <modal v-if="showSearchModal" @close="changeModal(false, 'search')">
       <!-- Replaces the header of the search modal -->
-      <template v-slot:header>
+      <template #header>
         <h1 class="mx-6 my-6 text-5xl font-bold">Search Results</h1>
       </template>
       <!-- Replaces the body of the search modal -->
-      <template v-slot:body>
+      <template #body>
         <table class="w-[calc(100%_-_2rem)] my-6 mx-6">
           <thead>
             <tr>
@@ -197,7 +202,7 @@ async function selectAfterSearch(ean) {
       <div class="flex flex-col w-full h-full">
         <!-- creates the area for the search box (first row, second column -> first row) -->
         <div class="flex flex-row justify-center w-full h-1/2">
-          <search v-model="search" />
+          <search-box v-model="search" />
         </div>
         <!-- creates a second row (first row, second column -> second row) -->
         <div class="flex flex-row w-full h-1/2">
