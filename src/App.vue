@@ -195,36 +195,37 @@ async function selectAfterSearch(ean) {
     <!-- creates the 1st row -->
     <div class="w-full md:flex md:flex-row h-1/2">
       <!-- creates the 1st column of the first row -->
-      <div class="w-full h-full md:flex-col">
+      <div class="h-1/2 md:h-full md:flex-col md:w-full">
         <current-table :current-till="currentTill" />
       </div>
       <!-- creates the 2nd column of the first row -->
-      <div class="flex w-full h-full md:flex-col">
+      <div class="md:flex md:flex-col md:w-full md:h-full h-1/2">
         <!-- creates the area for the search box (first row, second column -> first row) -->
-        <div class="flex flex-row justify-center w-full h-1/2">
+        <div class="md:flex md:flex-row md:justify-center md:w-full h-1/2">
           <search-box v-model="search" />
         </div>
         <!-- creates a second row (first row, second column -> second row) -->
-        <div class="flex flex-row w-full h-1/2">
+        <div class="flex md:flex-row md:w-full h-1/2">
           <!-- creates the first column ^ -->
-          <div class="flex flex-col justify-center w-1/2 h-full">
+          <div class="flex-col w-1/2 md:flex md:justify-center md:h-full">
             <search-button @goSearch="runSearch" />
           </div>
           <!-- creates the second column ^ -->
-          <div class="flex flex-col justify-center w-1/2 h-full">
+          <div class="flex-col w-1/2 md:flex md:justify-center md:h-full">
             <total />
           </div>
         </div>
       </div>
     </div>
+
     <!-- creates the second row -->
-    <div class="w-full md:flex md:flex-row h-1/2">
+    <div class="md:flex md:flex-row md:w-full md:h-1/2">
       <!-- creates the first column of the second row -->
-      <div class="w-full h-full md:flex-col">
+      <div class="md:flex-col md:w-full md:h-full h-[50vh]">
         <quick-actions />
       </div>
       <!-- creates the second column of the second row -->
-      <div class="w-full h-full md:flex-col">
+      <div class="w-[90vw] aspect-[4/3] md:flex-col md:h-full">
         <keypad v-model="qty" />
       </div>
     </div>
