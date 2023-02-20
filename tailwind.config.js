@@ -1,21 +1,15 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
+  mode: 'jit',
+  purge: ['./index.html', './src/**/*.{js,ts,jsx,tsx,vue}'],
   theme: {
-    extend: {
-      height: {
-        '98': '98%',
-      },
-      width: {
-        '98': '98%',
-      },
-      padding: {
-        '1/2': '50%',
-        full: '100%',
-      }
-    },
+    extend: {},
+  },
+  variants: {
+    extend: {},
   },
   plugins: [
-    require('tailwind-scrollbar')({ nocompatible: true }),
+    require('tailwind-scrollbar')({ nocompatible: true })
   ],
 }
+
