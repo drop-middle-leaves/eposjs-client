@@ -7,11 +7,11 @@
     <button
       type="button"
       @click="$emit('goSearch')"
-      class="w-full h-full text-6xl text-white bg-yellow-500 rounded-lg hover:bg-yellow-600"
+      class="w-full h-full text-white bg-yellow-500 rounded-lg hover:bg-yellow-600"
     >
       <font-awesome-icon
         icon="fa-solid fa-magnifying-glass"
-        class="h-[5.5rem] w-[5.5rem]"
+        class="h-[6vw] w-[6vw]"
       />
     </button>
   </div>

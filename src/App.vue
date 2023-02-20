@@ -20,6 +20,9 @@ const qty = ref('')
 // Prop for search input
 const search = ref('')
 
+// Prop for currently selected
+const currentSelected = ref('')
+
 // Current till
 const currentTill = ref([])
 
@@ -35,6 +38,7 @@ const showErrorModal = ref(false)
 // Changes the value of modal
 function changeModal(open, type) {
   switch (type) {
+    // If the type is search, change the value of showSearchModal
     case 'search': {
       switch (open) {
         case true:
@@ -47,6 +51,7 @@ function changeModal(open, type) {
       }
       break
     }
+    // If the type is error, change the value of showErrorModal
     case 'error': {
       switch (open) {
         case true:
@@ -72,7 +77,7 @@ async function runSearch() {
     return
   }
 
-  // Fetches the search results from the API
+  // Fetches the search results from the backend
   const searchResults = await fetch('http://localhost:5200/search', {
     method: 'POST',
     headers: {
@@ -90,11 +95,11 @@ async function runSearch() {
   changeModal(true, 'search')
 }
 
-// Select after search
+// Select item after search results
 async function selectAfterSearch(ean) {
   console.log(ean)
 
-  // Fetches the EAN info from the till
+  // Fetches the EAN info from the till (price etc)
   const searchResults = await fetch('http://localhost:5200/getEanInfo', {
     method: 'POST',
     headers: {
@@ -119,12 +124,18 @@ async function selectAfterSearch(ean) {
     // If quantity is not set, set it to 1
     const currentQty = qty.value === '' ? 1 : parseInt(qty.value)
 
+    console.log(currentTill.value.length)
+
     // Pushes the item to the till
     currentTill.value.push([
+      // ID for Vue Key
+      currentTill.value.length,
       searchResultsJSON[0].Description,
       currentQty,
       parseFloat(searchResultsJSON[0].Price),
     ])
+
+    console.log(currentTill.value)
   }
 
   // Resets the quantity
@@ -196,7 +207,10 @@ async function selectAfterSearch(ean) {
     <div class="flex flex-row w-full h-1/2">
       <!-- creates the 1st column of the first row -->
       <div class="flex-col w-full h-full">
-        <current-table :current-till="currentTill" />
+        <current-table
+          :current-till="currentTill"
+          v-model:currentSelected="currentSelected"
+        />
       </div>
       <!-- creates the 2nd column of the first row -->
       <div class="flex flex-col w-full h-full">
@@ -220,8 +234,11 @@ async function selectAfterSearch(ean) {
     <!-- creates the second row -->
     <div class="flex flex-row w-full h-1/2">
       <!-- creates the first column of the second row -->
-      <div class="flex-col w-full h-full">
-        <quick-actions />
+      <div class="flex flex-col justify-center w-full h-full">
+        <quick-actions
+          v-model:currentSelected="currentSelected"
+          v-model:currentTill="currentTill"
+        />
       </div>
       <!-- creates the second column of the second row -->
       <div class="flex-col w-full h-full">

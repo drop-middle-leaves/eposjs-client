@@ -45,7 +45,7 @@ function clearVal() {
     >
       <div class="flex-col flex h-full aspect-[4/3] gap-2 shrink">
         <div class="flex flex-row w-full gap-2 h-1/3 shrink">
-          <div class="buttonWrapper border-4 border-purple-600 text-[5.375rem]">
+          <div class="buttonWrapper border-4 border-purple-600 text-[3vw]">
             <p class="self-center">{{ qty }}</p>
           </div>
           <div class="buttonWrapper" @click="updateValBy(1)">
@@ -77,7 +77,7 @@ function clearVal() {
         <div class="flex flex-row w-full gap-2 h-1/3 shrink">
           <div class="buttonWrapper">
             <button
-              class="h-full w-full rounded-full bg-red-500 hover:bg-red-600 text-white text-[4rem]"
+              class="h-full w-full rounded-full bg-red-500 hover:bg-red-600 text-white text-[2.5vw]"
               @click="clearVal"
             >
               Clear
@@ -100,7 +100,7 @@ function clearVal() {
 
 <style lang="postcss" scoped>
 .button {
-  @apply rounded-full bg-purple-500 hover:bg-purple-600 text-[5.5rem] h-full w-full text-white shrink;
+  @apply rounded-full bg-purple-500 hover:bg-purple-600 text-[5vw] h-full w-full text-white shrink;
 }
 
 .buttonWrapper {

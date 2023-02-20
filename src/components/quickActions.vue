@@ -1,4 +1,37 @@
-<script setup></script>
+<script setup>
+import { computed } from 'vue'
+
+const props = defineProps(['currentTill', 'currentSelected'])
+const emit = defineEmits(['update:currentTill', 'update:currentSelected'])
+
+// Makes currentSelected a computed value to allow for two-way binding
+const currentSelected = computed({
+  get() {
+    return props.currentSelected
+  },
+  set(value) {
+    emit('update:currentSelected', value)
+  },
+})
+
+// Makes currentTill a computed value to allow for two-way binding
+const currentTill = computed({
+  get() {
+    return props.currentTill
+  },
+  set(value) {
+    emit('update:currentTill', value)
+  },
+})
+
+// Function to void an item
+function voidItem() {
+  if (currentSelected.value !== '') {
+    currentTill.value.splice(currentSelected.value, 1)
+    currentSelected.value = ''
+  }
+}
+</script>
 
 <template>
   <div class="flex justify-center w-full h-full">
@@ -35,7 +68,11 @@
         </button>
 
         <!-- col 2 -->
-        <button type="button" class="bg-red-500 hover:bg-red-600 buttonWrapper">
+        <button
+          type="button"
+          class="bg-red-500 hover:bg-red-600 buttonWrapper"
+          @click="voidItem"
+        >
           <font-awesome-icon icon="fa-solid fa-xmark" class="buttonIcon" />
         </button>
         <button
@@ -44,7 +81,11 @@
         >
           <font-awesome-icon icon="fa-solid fa-bars" class="buttonIcon" />
         </button>
-        <button type="button" class="bg-red-500 hover:bg-red-600 buttonWrapper">
+        <button
+          type="button"
+          class="bg-red-500 hover:bg-red-600 buttonWrapper"
+          @click="currentTill = ''"
+        >
           <font-awesome-icon
             icon="fa-solid fa-xmarks-lines"
             class="buttonIcon"
@@ -77,7 +118,7 @@
 
 <style lang="postcss" scoped>
 .buttonIcon {
-  @apply h-[5.5rem] w-[5.5rem] aspect-square self-center;
+  @apply h-[5.5vw] w-[5.5vw] aspect-square self-center;
 }
 .buttonWrapper {
   @apply h-full w-full rounded-lg text-white text-6xl flex justify-center;

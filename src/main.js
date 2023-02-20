@@ -3,7 +3,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 
 // Importing tailwind
-import './assets/compiled.css'
+import './assets/tailwind.css'
 
 // Import fontawesome
 import { library } from '@fortawesome/fontawesome-svg-core'

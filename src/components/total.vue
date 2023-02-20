@@ -6,12 +6,9 @@
   >
     <button
       type="button"
-      class="w-full h-full text-6xl text-white bg-green-500 rounded-lg hover:bg-green-600"
+      class="w-full h-full text-white bg-green-500 rounded-lg hover:bg-green-600"
     >
-      <font-awesome-icon
-        icon="fa-solid fa-check"
-        class="h-[5.5rem] w-[5.5rem]"
-      />
+      <font-awesome-icon icon="fa-solid fa-check" class="h-[6vw] w-[6vw]" />
     </button>
   </div>
 </template>

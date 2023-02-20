@@ -1,5 +1,26 @@
 <script setup>
-const props = defineProps(['currentTill'])
+import { computed } from 'vue'
+
+const props = defineProps(['currentTill', 'currentSelected'])
+const emit = defineEmits(['update:currentSelected'])
+
+// Defines value as the computed value of qty
+const currentSelected = computed({
+  get() {
+    return props.currentSelected
+  },
+  set(value) {
+    emit('update:currentSelected', value)
+  },
+})
+
+function selectItem(item) {
+  if (currentSelected.value === item) {
+    currentSelected.value = ''
+  } else {
+    currentSelected.value = item
+  }
+}
 </script>
 
 <template>
@@ -8,7 +29,7 @@ const props = defineProps(['currentTill'])
       class="h-[calc(100%_-_1rem)] w-[calc(100%_-_1rem)] border-2 border-gray-200 overflow-y-auto scrollbar scrollbar-thumb-rounded-lg scrollbar-thumb-gray-300 rounded-lg self-center"
     >
       <slot name="table">
-        <table class="w-full text-5xl text-left table-auto">
+        <table class="w-full text-[2.5vw] text-left table-auto">
           <thead class="bg-gray-300 border-collapse">
             <tr>
               <th class="px-4 py-2">Item</th>
@@ -18,16 +39,23 @@ const props = defineProps(['currentTill'])
             </tr>
           </thead>
           <tbody>
-            <tr v-for="i in props.currentTill">
-              <th class="px-4 py-2 border-t-2 border-gray-200">{{ i[0] }}</th>
+            <tr
+              v-for="i in props.currentTill"
+              :class="{
+                'select-color':
+                  props.currentTill.indexOf(i) === currentSelected,
+              }"
+              @click="selectItem(props.currentTill.indexOf(i))"
+            >
+              <th class="px-4 py-2 border-t-2 border-gray-200">{{ i[1] }}</th>
               <td class="px-4 py-2 border-t-2 border-l-2 border-gray-200">
-                {{ i[1] }}
+                {{ i[2] }}
               </td>
               <td class="px-4 py-2 border-t-2 border-l-2 border-gray-200">
-                €{{ i[2].toFixed(2) }}
+                €{{ i[3].toFixed(2) }}
               </td>
               <td class="px-4 py-2 border-t-2 border-l-2 border-gray-200">
-                €{{ (i[2] * i[1]).toFixed(2) }}
+                €{{ (i[3] * i[2]).toFixed(2) }}
               </td>
             </tr>
           </tbody>
@@ -37,4 +65,8 @@ const props = defineProps(['currentTill'])
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.select-color {
+  background-color: #d4edda;
+}
+</style>
