@@ -65,7 +65,7 @@ async function addItem(ean) {
   console.log(ean)
 
   // Fetches the EAN info from the till (price etc)
-  const searchResults = await fetch('http://localhost:5200/getEanInfo', {
+  const eanQuery = await fetch('http://localhost:5200/getEanInfo', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -78,10 +78,11 @@ async function addItem(ean) {
   // Closes search modal
   showSearchModal.value = false
 
-  const searchResultsJSON = await searchResults.json()
+  // Converts the search results to JSON
+  const eanQueryJSON = await eanQuery.json()
 
   // If the priceHistory record does not exist, cannot be added to the till (none of the returned information is correct)
-  if (searchResultsJSON[0].Price == null) {
+  if (eanQueryJSON[0].Price == null) {
     errorMessage.value =
       'The Item you have selected does not have an entry within the Price table. Please contact Retail Systems.'
     showErrorModal.value = true
@@ -94,12 +95,12 @@ async function addItem(ean) {
       // Tests whether at least one element in the item passes the test implemented by the provided function
       currentTill.value.some(
         // Tests whether the item description is the same as the description of the item being added
-        (item) => item[1] === searchResultsJSON[0].Description
+        (item) => item[1] === eanQueryJSON[0].Description
       )
     ) {
       // Gets the index of the item in the till
       const index = currentTill.value.findIndex(
-        (item) => item[1] === searchResultsJSON[0].Description
+        (item) => item[1] === eanQueryJSON[0].Description
       )
 
       // Adds the quantity to the existing item
@@ -107,11 +108,11 @@ async function addItem(ean) {
     } else {
       // If the item is not in the till, push it to the till
       currentTill.value.push([
-        // ID for Vue Key
+        // [0] is array placement as unique identifier (I know this is not best practice) for Vue Key
         currentTill.value.length,
-        searchResultsJSON[0].Description,
+        eanQueryJSON[0].Description,
         currentQty,
-        parseFloat(searchResultsJSON[0].Price),
+        parseFloat(eanQueryJSON[0].Price),
       ])
     }
   }
