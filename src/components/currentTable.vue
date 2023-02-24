@@ -52,10 +52,10 @@ function selectItem(item) {
                 {{ i[2] }}
               </td>
               <td class="px-4 py-2 border-t-2 border-l-2 border-gray-200">
-                €{{ i[3].toFixed(2) }}
+                €{{ (i[3] - i[3] * (i[4] / 100)).toFixed(2) }}
               </td>
               <td class="px-4 py-2 border-t-2 border-l-2 border-gray-200">
-                €{{ (i[3] * i[2]).toFixed(2) }}
+                €{{ ((i[3] - i[3] * (i[4] / 100)) * i[2]).toFixed(2) }}
               </td>
             </tr>
           </tbody>

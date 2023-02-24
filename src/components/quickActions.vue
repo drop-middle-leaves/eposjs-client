@@ -77,7 +77,13 @@ function flipPriceOverrideModal() {
 // Function to override the price
 function overridePrice() {
   if (currentSelected.value !== '') {
+    // Sets the new price
     currentTill.value[currentSelected.value][3] = newPrice
+
+    // Sets the price overrided flag to true
+    currentTill.value[currentSelected.value][5] = true
+
+    // Closes the price override modal
     showPriceOverrideModal.value = false
   }
   // Reset the selected item
@@ -134,12 +140,7 @@ function flipDiscountOverrideModal() {
 // Function to discount the price
 function applyDiscount() {
   if (currentSelected.value !== '') {
-    // New price
-    currentTill.value[currentSelected.value][3] =
-      currentTill.value[currentSelected.value][3] -
-      currentTill.value[currentSelected.value][3] * (newDiscount / 100)
-
-    // commits discount to database
+    // commits discount to array
     currentTill.value[currentSelected.value][4] = newDiscount
 
     // Hides modal

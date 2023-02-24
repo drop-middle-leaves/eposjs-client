@@ -94,8 +94,8 @@ async function addItem(ean) {
     if (
       // Tests whether at least one element in the item passes the test implemented by the provided function
       currentTill.value.some(
-        // Tests whether the item description is the same as the description of the item being added
-        (item) => item[1] === eanQueryJSON[0].Description
+        // Tests whether the item description is the same as the description of the item being added and the item is not a refund
+        (item) => item[1] === eanQueryJSON[0].Description && item[6] === false
       )
     ) {
       // Gets the index of the item in the till
@@ -108,10 +108,20 @@ async function addItem(ean) {
     } else {
       // If the item is not in the till, push it to the till
       currentTill.value.push([
+        // ean
         ean,
+        // description
         eanQueryJSON[0].Description,
+        // quantity
         currentQty,
+        // price
         parseFloat(eanQueryJSON[0].Price),
+        // discount
+        0,
+        // price overrided
+        false,
+        // refund
+        false,
       ])
     }
   }
@@ -207,7 +217,7 @@ async function addItem(ean) {
           </div>
           <!-- creates the second column ^ -->
           <div class="flex flex-col justify-center w-1/2 h-full">
-            <total />
+            <total :current-till="currentTill" />
           </div>
         </div>
       </div>
