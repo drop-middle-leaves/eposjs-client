@@ -108,14 +108,16 @@ async function addItem(ean) {
     } else {
       // If the item is not in the till, push it to the till
       currentTill.value.push([
-        // [0] is array placement as unique identifier (I know this is not best practice) for Vue Key
-        currentTill.value.length,
+        ean,
         eanQueryJSON[0].Description,
         currentQty,
         parseFloat(eanQueryJSON[0].Price),
       ])
     }
   }
+
+  // Resets the search
+  search.value = ''
 
   // Resets the quantity
   qty.value = ''
@@ -217,6 +219,7 @@ async function addItem(ean) {
         <quick-actions
           v-model:currentSelected="currentSelected"
           v-model:currentTill="currentTill"
+          @addItem="addItem($event)"
         />
       </div>
       <!-- creates the second column of the second row -->

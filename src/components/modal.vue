@@ -16,13 +16,14 @@
       <div>
         <slot name="body">default body</slot>
       </div>
-
-      <button
-        class="px-8 py-6 mx-6 my-6 mt-3 text-[2vw] font-bold text-white bg-red-500 rounded-lg hover:bg-red-700"
-        @click="$emit('close')"
-      >
-        Close
-      </button>
+      <slot name="footer">
+        <button
+          class="px-8 py-6 mx-6 my-6 mt-3 text-[2vw] font-bold text-white bg-red-500 rounded-lg hover:bg-red-700"
+          @click="$emit('close')"
+        >
+          Close
+        </button>
+      </slot>
     </div>
   </div>
 </template>
