@@ -17,12 +17,18 @@
         <slot name="body">default body</slot>
       </div>
       <slot name="footer">
-        <button
-          class="px-8 py-6 mx-6 my-6 mt-3 text-[2vw] font-bold text-white bg-red-500 rounded-lg hover:bg-red-700"
-          @click="$emit('close')"
-        >
-          Close
-        </button>
+        <div class="flex justify-center w-full h-full">
+          <button
+            type="button"
+            @click="$emit('close')"
+            class="w-[calc(100%_-_0.5rem)] h-[8vw] mx-1 mt-3 text-white bg-red-500 rounded-lg hover:bg-red-600"
+          >
+            <font-awesome-icon
+              icon="fa-solid fa-times"
+              class="h-[6vw] w-[6vw]"
+            />
+          </button>
+        </div>
       </slot>
     </div>
   </div>
