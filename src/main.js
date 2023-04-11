@@ -13,6 +13,7 @@ import {
   faCheck,
   faDolly,
   faHammer,
+  faHourglass,
   faMagnifyingGlass,
   faMoneyBill,
   faPercent,
@@ -34,8 +35,11 @@ library.add(
   faPercent,
   faMoneyBill,
   faHammer,
-  faArrowRotateLeft
+  faArrowRotateLeft,
+  faHourglass
 )
 
 // Creating the app and mounting the div id app from App.vue
+// Allowing fontawesome and socket.io to be used in the app
+
 createApp(App).component('font-awesome-icon', FontAwesomeIcon).mount('#app')

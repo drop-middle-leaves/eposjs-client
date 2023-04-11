@@ -9,7 +9,28 @@ import QuickActions from './components/quickActions.vue'
 import Keypad from './components/keypad.vue'
 import Modal from './components/modal.vue'
 
-// Import required vue modules
+// Socket testing
+
+import io from 'socket.io-client'
+
+const message = ref('')
+
+const socket = io('http://localhost:5200') // replace with your server URL
+
+socket.on('connect', () => {
+  console.log('Connected to server')
+})
+
+socket.on('recieveData', (data) => {
+  message.value = data
+  console.log(data)
+})
+
+const sendMessage = () => {
+  socket.emit('sendData', 'Hello from Vue.js 33')
+}
+
+sendMessage()
 
 // Search results - defined at top to prevent UI errors
 const searchBody = ref('')
@@ -62,8 +83,6 @@ async function runSearch() {
 
 // Select item after search results
 async function addItem(ean) {
-  console.log(ean)
-
   // Fetches the EAN info from the till (price etc)
   const eanQuery = await fetch('http://localhost:5200/getEanInfo', {
     method: 'POST',
@@ -217,7 +236,7 @@ async function addItem(ean) {
           </div>
           <!-- creates the second column ^ -->
           <div class="flex flex-col justify-center w-1/2 h-full">
-            <total :current-till="currentTill" />
+            <total v-model:currentTill="currentTill" />
           </div>
         </div>
       </div>

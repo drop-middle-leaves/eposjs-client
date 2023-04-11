@@ -159,6 +159,63 @@ const showQuickItems = ref(false)
 function flipQuickItemsModal() {
   showQuickItems.value = !showQuickItems.value
 }
+
+/* Refund */
+// Refund Modal Toggle
+const showRefundModal = ref(false)
+const paymentID = ref('')
+
+// Function to toggle the refund modal
+function flipRefundModal(reset) {
+  showRefundModal.value = !showRefundModal.value
+  if (reset) {
+    paymentID.value = ''
+  }
+}
+
+// Function to refund items
+async function refund() {
+  // Array of EANs to refund
+  let data = {
+    EANs: [],
+    paymentID: paymentID.value,
+  }
+
+  for (const i of currentTill.value) {
+    let tmp = {}
+    tmp.EAN = i[0]
+    tmp.Quantity = i[2]
+    data.EANs.push(tmp)
+  }
+
+  // Requests a refund from the backend
+  const refundQuery = await fetch('http://localhost:5200/refund', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  })
+
+  // Converts results to JSON
+  const refundJSON = await refundQuery.json()
+
+  console.log(refundJSON)
+
+  // If the refund was successful
+  if (refundJSON == 'Refund successful') {
+    // Clears the till
+    currentTill.value = []
+    // Closes the refund modal
+    showRefundModal.value = false
+    // Resets the payment ID
+    paymentID.value = ''
+  } else {
+    // If the refund was not successful
+    alert('Refund Failed. Error message: ' + refundJSON)
+    paymentID.value = ''
+  }
+}
 </script>
 
 <template>
@@ -279,6 +336,52 @@ function flipQuickItemsModal() {
       </template>
     </modal>
 
+    <!-- Refund Modal -->
+    <modal v-if="showRefundModal">
+      <template #header>
+        <h1 class="text-[4vw] font-bold">Refund</h1>
+      </template>
+      <template #body>
+        <div class="justify-center w-full h-full">
+          <div class="flex justify-center">
+            <h1 class="text-[3vw] mb-2 text-center">
+              Enter payment ID to refund
+            </h1>
+          </div>
+          <input
+            type="text"
+            class="w-full h-[8vw] text-[3vw] rounded-lg border-2 border-gray-200"
+            v-model="paymentID"
+            placeholder="Case Sensitive"
+          />
+        </div>
+      </template>
+      <template #footer>
+        <div class="flex justify-center w-full h-full">
+          <button
+            type="button"
+            @click="flipRefundModal(true)"
+            class="w-[calc(100%_-_0.5rem)] h-[8vw] mx-1 mt-3 text-white bg-red-500 rounded-lg hover:bg-red-600"
+          >
+            <font-awesome-icon
+              icon="fa-solid fa-times"
+              class="h-[6vw] w-[6vw]"
+            />
+          </button>
+          <button
+            type="button"
+            @click="refund"
+            class="w-[calc(100%_-_0.5rem)] mx-1 mt-3 h-[8vw] text-white bg-green-500 rounded-lg hover:bg-green-600"
+          >
+            <font-awesome-icon
+              icon="fa-solid fa-check"
+              class="h-[6vw] w-[6vw]"
+            />
+          </button>
+        </div>
+      </template>
+    </modal>
+
     <!-- Creates outer border -->
     <div
       class="h-[calc(100%_-_1rem)] w-[calc(100%_-_1rem)] rounded-lg self-center"
@@ -324,6 +427,7 @@ function flipQuickItemsModal() {
           type="button"
           class="bg-orange-500 hover:bg-orange-600 buttonWrapper"
           v-if="!showQuickItems"
+          @click="flipRefundModal(true)"
         >
           <font-awesome-icon
             icon="fa-solid fa-arrow-rotate-left"
