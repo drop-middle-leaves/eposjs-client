@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue'
 
 const props = defineProps(['currentTill'])
-const emit = defineEmits(['update:currentTill'])
+const emit = defineEmits(['update:currentTill', 'paymentUpdate'])
 
 // Makes currentTill a computed value to allow for two-way binding
 const currentTill = computed({
@@ -71,6 +71,7 @@ async function total() {
     console.log(orderCreateQueryJSON.order_id)
 
     if (orderCreateQueryJSON.paymentLink !== undefined) {
+      emit('paymentUpdate', orderCreateQueryJSON.paymentLink)
       awaitPayment()
     }
   } else if (currentWaiting.value == true) {
@@ -92,6 +93,7 @@ async function awaitPayment() {
   currentWaiting.value = false
   console.log('Payment done, resetting till')
   if (paid == true) {
+    emit('paymentUpdate', 'Payment complete')
     currentTill.value = []
     paid = false
   }
@@ -132,6 +134,7 @@ async function cancelPayment() {
 
   if (cancelOrderQueryJSON == 'Order cancelled') {
     console.log('Payment cancelled')
+    emit('paymentUpdate', 'Payment cancelled')
     currentWaiting.value = false
     paid = false
   } else {

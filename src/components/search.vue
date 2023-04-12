@@ -1,6 +1,22 @@
 <script setup>
-defineProps(['modelValue'])
-defineEmits(['update:modelValue'])
+import { computed } from 'vue'
+
+// Defines props and emits
+const props = defineProps(['modelValue'])
+const emit = defineEmits(['update:modelValue', 'addItem'])
+
+// Defines value as the computed value of qty
+const search = computed({
+  get() {
+    return props.modelValue
+  },
+})
+
+// Function to emit contents of text input
+const addItem = () => {
+  console.log(search.value)
+  emit('addItem', search.value)
+}
 </script>
 
 <template>
@@ -12,6 +28,7 @@ defineEmits(['update:modelValue'])
         class="w-full h-full text-[4vw] rounded-lg"
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)"
+        @keypress.enter="addItem()"
         placeholder="Enter EAN or Search Term"
       />
     </div>
@@ -19,3 +36,4 @@ defineEmits(['update:modelValue'])
 </template>
 
 <style scoped></style>
+§

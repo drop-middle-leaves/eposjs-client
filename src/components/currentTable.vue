@@ -59,6 +59,26 @@ function selectItem(item) {
               </td>
             </tr>
           </tbody>
+          <tfoot class="bg-gray-300 border-collapse">
+            <!-- Total -->
+            <tr>
+              <th class="px-4 py-2">Total</th>
+              <td class="px-4 py-2">
+                {{ props.currentTill.reduce((a, b) => a + b[2], 0) }}
+              </td>
+              <td class="px-4 py-2"></td>
+              <td class="px-4 py-2">
+                €{{
+                  props.currentTill
+                    .reduce(
+                      (a, b) => a + (b[3] - b[3] * (b[4] / 100)) * b[2],
+                      0
+                    )
+                    .toFixed(2)
+                }}
+              </td>
+            </tr>
+          </tfoot>
         </table>
       </slot>
     </div>

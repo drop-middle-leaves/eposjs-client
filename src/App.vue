@@ -1,6 +1,6 @@
 <script setup>
 // Import the components
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import CurrentTable from './components/currentTable.vue'
 import SearchBox from './components/search.vue'
 import SearchButton from './components/searchButton.vue'
@@ -13,24 +13,11 @@ import Modal from './components/modal.vue'
 
 import io from 'socket.io-client'
 
-const message = ref('')
-
 const socket = io('http://localhost:5200') // replace with your server URL
 
 socket.on('connect', () => {
   console.log('Connected to server')
 })
-
-socket.on('recieveData', (data) => {
-  message.value = data
-  console.log(data)
-})
-
-const sendMessage = () => {
-  socket.emit('sendData', 'Hello from Vue.js 33')
-}
-
-sendMessage()
 
 // Search results - defined at top to prevent UI errors
 const searchBody = ref('')
@@ -55,6 +42,27 @@ const showSearchModal = ref(false)
 
 // Ref to determine if the error modal is shown
 const showErrorModal = ref(false)
+
+// Watches the currentTill value, if it changes, sends value via websocket.
+watch(
+  () => currentTill.value,
+  (data) => {
+    socket.emit('currentTill', data)
+  },
+  { deep: true }
+)
+
+// Watches the currentSelected value, if it changes, sends value via websocket.
+watch(
+  () => currentSelected.value,
+  (data) => {
+    socket.emit('currentSelected', data)
+  },
+  { deep: true }
+)
+socket.on('currentSelected', (data) => {
+  currentSelected.value = data
+})
 
 // Runs the search
 async function runSearch() {
@@ -226,7 +234,7 @@ async function addItem(ean) {
       <div class="flex flex-col w-full h-full">
         <!-- creates the area for the search box (first row, second column -> first row) -->
         <div class="flex flex-row justify-center w-full h-1/2">
-          <search-box v-model="search" />
+          <search-box v-model="search" @addItem="addItem($event)" />
         </div>
         <!-- creates a second row (first row, second column -> second row) -->
         <div class="flex flex-row w-full h-1/2">
@@ -236,7 +244,10 @@ async function addItem(ean) {
           </div>
           <!-- creates the second column ^ -->
           <div class="flex flex-col justify-center w-1/2 h-full">
-            <total v-model:currentTill="currentTill" />
+            <total
+              v-model:currentTill="currentTill"
+              @payment-update="(n) => socket.emit('paymentURL', n)"
+            />
           </div>
         </div>
       </div>

@@ -216,6 +216,10 @@ async function refund() {
     paymentID.value = ''
   }
 }
+
+function clearTill() {
+  currentTill.value = []
+}
 </script>
 
 <template>
@@ -479,7 +483,7 @@ async function refund() {
         <button
           type="button"
           class="bg-red-500 hover:bg-red-600 buttonWrapper"
-          @click="currentTill = []"
+          @click="clearTill"
           v-if="!showQuickItems"
         >
           <font-awesome-icon
